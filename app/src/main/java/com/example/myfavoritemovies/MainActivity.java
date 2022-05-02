@@ -247,7 +247,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-
 //        FloatingActionButton fab = findViewById(R.id.fab);
 //        fab.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -295,8 +294,8 @@ public class MainActivity extends AppCompatActivity {
 
 //            Toast.makeText(MainActivity.this, "Button is clicked!",
 //                    Toast.LENGTH_SHORT).show();
-//            Intent intent = new Intent(MainActivity.this, AddEditActivity.class);
-//            startActivityForResult(intent, ADD_MOVIE_REQUEST_CODE);
+            Intent intent = new Intent(MainActivity.this, AddEditActivity.class);
+            startActivityForResult(intent, ADD_MOVIE_REQUEST_CODE);
 
         }
 
@@ -338,18 +337,17 @@ public class MainActivity extends AppCompatActivity {
         movieAdapter.setMovieArrayList(movieArrayList);
         recyclerView.setAdapter(movieAdapter);
 
-//        movieAdapter.setOnItemClickListener(new MovieAdapter.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(Movie movie) {
-//                selectedMovieId = movie.getMovieId();
-//                Intent intent = new Intent(MainActivity.this,
-//                        AddEditActivity.class);
-//                intent.putExtra(AddEditActivity.MOVIE_ID, selectedMovieId);
-//                intent.putExtra(AddEditActivity.MOVIE_NAME, movie.getMovieName());
-//                intent.putExtra(AddEditActivity.MOVIE_DESCRIPTION, movie.getMovieDescription());
-//                startActivityForResult(intent, EDIT_MOVIE_REQUEST_CODE);
-//            }
-//        });
+        movieAdapter.setOnItemClickListener(new MovieAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(Movie movie) {
+                selectedMovieId = movie.getMovieId();
+                Intent intent = new Intent(MainActivity.this, AddEditActivity.class);
+                intent.putExtra(AddEditActivity.MOVIE_ID, selectedMovieId);
+                intent.putExtra(AddEditActivity.MOVIE_NAME, movie.getMovieName());
+                intent.putExtra(AddEditActivity.MOVIE_DESCRIPTION, movie.getMovieDescription());
+                startActivityForResult(intent, EDIT_MOVIE_REQUEST_CODE);
+            }
+        });
 
         new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,
                 ItemTouchHelper.LEFT) {
@@ -371,32 +369,32 @@ public class MainActivity extends AppCompatActivity {
         }).attachToRecyclerView(recyclerView);
     }
 
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode,
-//                                    @Nullable Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//
-//        int selectedGenreId = selectedGenre.getId();
-//
-//        if (requestCode == ADD_MOVIE_REQUEST_CODE && resultCode == RESULT_OK) {
-//
-//            Movie movie = new Movie();
-//            movie.setGenreId(selectedGenreId);
-//            movie.setMovieName(data.getStringExtra(AddEditActivity.MOVIE_NAME));
-//            movie.setMovieDescription(data.getStringExtra(AddEditActivity.MOVIE_DESCRIPTION));
-//
-//            mainActivityViewModel.addNewMovie(movie);
-//
-//        } else if (requestCode == EDIT_MOVIE_REQUEST_CODE && resultCode == RESULT_OK) {
-//
-//            Movie movie = new Movie();
-//            movie.setMovieId(selectedMovieId);
-//            movie.setGenreId(selectedGenreId);
-//            movie.setMovieName(data.getStringExtra(AddEditActivity.MOVIE_NAME));
-//            movie.setMovieDescription(data.getStringExtra(AddEditActivity.MOVIE_DESCRIPTION));
-//
-//            mainActivityViewModel.updateMovie(movie);
-//
-//        }
-//    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode,
+                                    @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        int selectedGenreId = selectedGenre.getId();
+
+        if (requestCode == ADD_MOVIE_REQUEST_CODE && resultCode == RESULT_OK) {
+
+            Movie movie = new Movie();
+            movie.setGenreId(selectedGenreId);
+            movie.setMovieName(data.getStringExtra(AddEditActivity.MOVIE_NAME));
+            movie.setMovieDescription(data.getStringExtra(AddEditActivity.MOVIE_DESCRIPTION));
+
+            mainActivityViewModel.addNewMovie(movie);
+
+        } else if (requestCode == EDIT_MOVIE_REQUEST_CODE && resultCode == RESULT_OK) {
+
+            Movie movie = new Movie();
+            movie.setMovieId(selectedMovieId);
+            movie.setGenreId(selectedGenreId);
+            movie.setMovieName(data.getStringExtra(AddEditActivity.MOVIE_NAME));
+            movie.setMovieDescription(data.getStringExtra(AddEditActivity.MOVIE_DESCRIPTION));
+
+            mainActivityViewModel.updateMovie(movie);
+
+        }
+    }
 }
